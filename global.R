@@ -10,6 +10,8 @@ library(stringr)
 library(tidyr)
 library(lubridate)
 library(ggplot2)
+library(plotly)
+library(readxl)
 
 ##pre-proc the data
 
@@ -122,5 +124,17 @@ Total_Raised_By_Party_Type<-scraped_us_finance_data %>%
   summarise(sum_Total_Raised = sum(Total_Raised)) %>%
   as.data.frame()
 
+df<-readxl::read_excel("US Election File Used.xlsx",1)
+colnames(df)<-c( "Candidate_Name","Candidate_Office","Candidate_Party_Affiliation","Total_Receipts","Total_Disbursements",
+                 "Cash_on_Hand","Debts_Owed_by_Committee"
+)
+df2 <- dplyr::filter(df,Candidate_Office=="President") %>% as.data.frame()
 
+
+df2$Running <- sapply(df2$Candidate_Name, function(x) switch(as.character(x),
+                                                             "SANDERS, BERNARD" = "Running",
+                                                             "CLINTON, HILLARY RODHAM" = "Running",
+                                                             "TRUMP, DONALD J." = "Running",
+                                                             "Not running"
+))
 

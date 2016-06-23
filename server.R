@@ -43,4 +43,7 @@ shinyServer(function(input, output) {
   
   output$table <- renderTable(Total_Raised_By_Candidate_Type.sset())
   
+  output$plotly.plot <- renderPlotly({ plot_ly(df2, x = Candidate_Name, y = Total_Receipts, text = paste("Status: ", Running),mode = "markers", color = Debts_Owed_by_Committee, size = Cash_on_Hand)
+     })
+  
 })
